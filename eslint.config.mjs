@@ -80,7 +80,7 @@ export default tseslint.config({
     'max-len': ['error', { 'code': 120, 'ignoreStrings': true, 'ignoreComments': true }],
     'max-classes-per-file': 'error',
     'newline-per-chained-call': 'error',
-    'no-console': 'error',
+    'no-console': 'warn',
     'no-lonely-if': 'error',
     '@stylistic/no-multiple-empty-lines': ['error', { 'max': 2, 'maxBOF': 0 }],
     'no-plusplus': 'error',

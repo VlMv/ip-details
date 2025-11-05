@@ -11,7 +11,7 @@ export const MainLayout = ({ content }: { content: ReactElement }) => {
       flexDirection: 'column',
     }}
     >
-      <Box sx={{ flexGrow: 5 }}>
+      <Box sx={{ padding: 10 }}>
         {content}
       </Box>
     </Box>

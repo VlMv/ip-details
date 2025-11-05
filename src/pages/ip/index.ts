@@ -1,0 +1,1 @@
+export { IpPage } from './ui';
