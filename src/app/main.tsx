@@ -3,8 +3,10 @@ import { BrowserRouter } from 'react-router';
 import ReactDOM from 'react-dom/client';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'react-hot-toast';
 
 import { App } from './App';
+
 import '@pigment-css/react/styles.css';
 import '../global.css';
 
@@ -19,6 +21,7 @@ root.render(
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={client}>
         <BrowserRouter>
+          <Toaster toastOptions={{ duration: 2000 }} />
           <App />
         </BrowserRouter>
       </QueryClientProvider>

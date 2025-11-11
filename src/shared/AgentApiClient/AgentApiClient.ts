@@ -22,7 +22,7 @@ export type ApiResponse<T> = {
   },
 };
 
-export class ApiClient {
+class AgentApiClient {
   constructor() {}
 
   private request<TResult>(
@@ -100,4 +100,4 @@ export class ApiClient {
   }
 }
 
-export const apiClient = new ApiClient();
+export const apiClient = new AgentApiClient();

@@ -5,15 +5,10 @@ import { ReactElement } from 'react';
 export const MainLayout = ({ content }: { content: ReactElement }) => {
   return (
     <Box sx={{
-      paddingInline: 1,
-      height: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
+      padding: 10,
     }}
     >
-      <Box sx={{ padding: 10 }}>
-        {content}
-      </Box>
+      {content}
     </Box>
   );
 };

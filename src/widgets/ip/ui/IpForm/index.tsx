@@ -6,18 +6,18 @@ import { ResizableTextInput } from 'shared/ui/ResizableTextInput';
 import { NDSSwitch } from 'features/ip';
 import { CancelButton } from 'shared/ui/CancelButton';
 import { SaveButton } from 'shared/ui/SaveButton';
+import { IPData } from 'entities/ip';
 
 import { IPFormType, useIPFormSchema, IPFormFieldNames } from './hooks/useIPFormSchema';
+import { IP_FORM_LIMITS } from './const';
 
 
 type IPFormProps = {
-  isEditMode: boolean,
-  ipData?: Partial<IPFormType>,
-  onFormSubmit: (data: IPFormType) => Promise<void>,
+  ipData?: Partial<IPData>,
+  onFormSubmit: (data: IPData) => Promise<void>,
 };
 
 export const IPForm = ({
-  isEditMode,
   ipData,
   onFormSubmit,
 }: IPFormProps) => {
@@ -31,7 +31,7 @@ export const IPForm = ({
   } = useIPFormSchema();
 
   const ipDefaultValues = useMemo(() => {
-    if (isEditMode && ipData) {
+    if (ipData) {
       return { ...ipData };
     }
 
@@ -51,10 +51,17 @@ export const IPForm = ({
       [IPFormFieldNames.TAX_SYSTEM]: '',
       [IPFormFieldNames.VAT_PAYER]: false,
     };
-  }, [ipData, isEditMode]);
+  }, [ipData]);
 
   useEffect(() => {
-    reset(ipDefaultValues);
+    reset(
+      ipDefaultValues,
+      {
+        keepValues: false,
+        keepDefaultValues: false,
+        keepDirty: false,
+      },
+    );
     return () => reset();
   }, [ipDefaultValues, reset]);
 
@@ -141,7 +148,9 @@ export const IPForm = ({
           name={IPFormFieldNames.PHONE}
           render={({ field: { onChange, onBlur, value }, fieldState }) => (
             <ResizableTextInput
-              onChange={onChange}
+              onChange={(val) => {
+                if (val.length <= IP_FORM_LIMITS.PHONE_MAX) { onChange(val); }
+              }}
               onBlur={onBlur}
               value={value}
               label="Телефон"
@@ -159,11 +168,12 @@ export const IPForm = ({
           render={({ field: { onChange, onBlur, value }, fieldState }) => (
             <ResizableTextInput
               type="number"
-              onChange={onChange}
+              onChange={(val) => {
+                if (val.length <= Math.max(...IP_FORM_LIMITS.INN_LENGTHS)) { onChange(val); }
+              }}
               onBlur={onBlur}
               value={value}
               label="ИНН"
-              slotProps={{ htmlInput: { maxLength: 12 } }}
               isInvalid={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
               isDisabled={isSubmitting}
@@ -178,11 +188,12 @@ export const IPForm = ({
           render={({ field: { onChange, onBlur, value }, fieldState }) => (
             <ResizableTextInput
               type="number"
-              onChange={onChange}
+              onChange={(val) => {
+                if (val.length <= IP_FORM_LIMITS.OGRN_MAX) { onChange(val); }
+              }}
               onBlur={onBlur}
               value={value}
               label="ОГРНИП / ОГРН"
-              slotProps={{ htmlInput: { maxLength: 15 } }}
               isInvalid={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
               isDisabled={isSubmitting}
@@ -214,11 +225,12 @@ export const IPForm = ({
           render={({ field: { onChange, onBlur, value }, fieldState }) => (
             <ResizableTextInput
               type="number"
-              onChange={onChange}
+              onChange={(val) => {
+                if (val.length <= IP_FORM_LIMITS.BIK_LENGTH) { onChange(val); }
+              }}
               onBlur={onBlur}
               value={value}
               label="БИК"
-              slotProps={{ htmlInput: { maxLength: 9 } }}
               isInvalid={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
               isDisabled={isSubmitting}
@@ -233,11 +245,12 @@ export const IPForm = ({
           render={({ field: { onChange, onBlur, value }, fieldState }) => (
             <ResizableTextInput
               type="number"
-              onChange={onChange}
+              onChange={(val) => {
+                if (val.length <= IP_FORM_LIMITS.ACCOUNT_LENGTH) { onChange(val); }
+              }}
               onBlur={onBlur}
               value={value}
               label="Корреспондентский счёт"
-              slotProps={{ htmlInput: { maxLength: 20 } }}
               isInvalid={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
               isDisabled={isSubmitting}
@@ -252,11 +265,12 @@ export const IPForm = ({
           render={({ field: { onChange, onBlur, value }, fieldState }) => (
             <ResizableTextInput
               type="number"
-              onChange={onChange}
+              onChange={(val) => {
+                if (val.length <= IP_FORM_LIMITS.ACCOUNT_LENGTH) { onChange(val); }
+              }}
               onBlur={onBlur}
               value={value}
               label="Расчётный счёт"
-              slotProps={{ htmlInput: { maxLength: 20 } }}
               isInvalid={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
               isDisabled={isSubmitting}

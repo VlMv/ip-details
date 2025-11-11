@@ -1,0 +1,16 @@
+export type IPData = {
+  name: string,
+  registrationAddress: string,
+  actualAddress: string,
+  email: string,
+  phone: string,
+  inn: string,
+  ogrn: string,
+  bankName: string,
+  bik: string,
+  correspondentAccount: string,
+  checkingAccount: string,
+  okved: string,
+  taxSystem: string,
+  vatPayer: boolean,
+};
