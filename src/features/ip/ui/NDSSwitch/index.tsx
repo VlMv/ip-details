@@ -26,7 +26,7 @@ export const NDSSwitch = ({
       <FormLabel>Уплата НДС</FormLabel>
       <Box>
         <Switch
-          checked={isChecked}
+          checked={isChecked || false}
           onChange={handleChange}
           disabled={isDisabled}
         />

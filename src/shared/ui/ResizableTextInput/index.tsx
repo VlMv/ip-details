@@ -35,7 +35,7 @@ export const ResizableTextInput = ({
       {label && <FormLabel required={isRequired} error={isInvalid}>{label}</FormLabel>}
       <TextField
         placeholder={placeholder}
-        value={value}
+        value={value || ''}
         disabled={isDisabled}
         error={isInvalid}
         fullWidth={true}

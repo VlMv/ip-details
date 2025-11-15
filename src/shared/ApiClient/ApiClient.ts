@@ -22,14 +22,20 @@ export type ApiResponse<T> = {
   },
 };
 
-class AgentApiClient {
+class ApiClient {
   constructor() {}
 
   private request<TResult>(
     url: string,
     config: AxiosRequestConfig,
   ): Promise<AxiosResponse<ApiResponse<TResult>>> {
-    return axiosInstance.request<ApiResponse<TResult>>({ url, ...config });
+    return axiosInstance.request<ApiResponse<TResult>>({ url, ...config })
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        return response;
+      });
   }
 
   private originRequest<TResult>(
@@ -100,4 +106,4 @@ class AgentApiClient {
   }
 }
 
-export const apiClient = new AgentApiClient();
+export const apiClient = new ApiClient();

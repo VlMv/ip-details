@@ -12,7 +12,9 @@ export const useGetIPDataFromFile = () => {
       toast.success('Данные ИП успешно загружены');
     },
     onError: (error: Error) => {
-      toast.error(`Ошибка при загрузке данных ИП: ${error.message}`);
+      toast.error(`Ошибка при загрузке данных ИП: ${error.message}`, {
+        duration: 3000,
+      });
     },
   });
 };

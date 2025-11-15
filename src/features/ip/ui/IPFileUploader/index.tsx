@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import Button from '@mui/material/Button';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { useGetIPDataFromFile, useIPStore } from 'entities/ip';
 
@@ -22,8 +23,26 @@ const ACCEPTED_FILE_TYPES = [
 export const IPFileUploader = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string>('');
-  const { setIPData } = useIPStore();
+  const { setIPData, clearIPData } = useIPStore();
   const { mutate: uploadFile, isPending } = useGetIPDataFromFile();
+
+  const handleClearFile = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setFileName('');
+    clearIPData();
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (isPending) {
+      return;
+    }
+
+    fileInputRef.current?.click();
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -38,8 +57,8 @@ export const IPFileUploader = () => {
         setIPData(data);
       },
       onError: () => {
-        // Error is already handled by the toast in useGetIPDataFromFile
         setFileName('');
+        clearIPData();
         if (fileInputRef.current) {
           fileInputRef.current.value = '';
         }
@@ -48,13 +67,47 @@ export const IPFileUploader = () => {
   };
 
   return (
-    <Button
-      variant="contained"
-      component="label"
-      disabled={isPending}
-      startIcon={isPending ? <CircularProgress size={20} /> : null}
-    >
-      {isPending ? 'Обработка файла...' : fileName || 'Загрузить данные ИП из файла'}
+    <>
+      <Button
+        variant="contained"
+        disabled={isPending}
+        startIcon={isPending ? <CircularProgress size={20} /> : null}
+        onClick={handleButtonClick}
+      >
+        {isPending
+          ? (
+            'Обработка файла...'
+          )
+          : fileName
+            ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
+                <span
+                  style={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    maxWidth: '200px',
+                  }}
+                >
+                  {fileName}
+                </span>
+                <IconButton
+                  size="small"
+                  onClick={handleClearFile}
+                  disabled={isPending}
+                  sx={{
+                    color: 'white',
+                  }}
+                  component="span"
+                >
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              </div>
+            )
+            : (
+              'Загрузить данные ИП из файла'
+            )}
+      </Button>
       <input
         ref={fileInputRef}
         type="file"
@@ -63,6 +116,6 @@ export const IPFileUploader = () => {
         accept={ACCEPTED_FILE_TYPES.join(', ')}
         disabled={isPending}
       />
-    </Button>
+    </>
   );
 };

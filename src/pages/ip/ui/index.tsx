@@ -3,9 +3,15 @@ import Typography from '@mui/material/Typography';
 
 import { IPFileUploader } from 'features/ip';
 import { IPForm } from 'widgets/ip';
+import { IPData, useIPStore } from 'entities/ip';
 
 
 export const IpPage = () => {
+  const { ipData } = useIPStore();
+
+  const handleFormSubmit = async (data: IPData) => {
+    console.log('Form submitted:', data);
+  };
 
   return (
     <Box sx={{ margin: '0 auto', maxWidth: '50%' }}>
@@ -14,7 +20,8 @@ export const IpPage = () => {
         <IPFileUploader />
       </Box>
       <IPForm
-        onFormSubmit={async (data) => console.log(data)}
+        ipData={ipData || undefined}
+        onFormSubmit={handleFormSubmit}
       />
     </Box>
   );
